@@ -1,0 +1,364 @@
+:root {
+  --primary: #7c3aed;
+  --primary-light: #a78bfa;
+  --info: #06b6d4;
+  --info-light: #67e8f9;
+  --danger: #ef4444;
+  --success: #22c55e;
+  --bg: #0c1222;
+  --bg-card: #162033;
+  --bg-card-hover: #1c2844;
+  --bg-input: #1e2d4a;
+  --text: #e8edf5;
+  --text-muted: #7b8ba5;
+  --text-dim: #4a5a74;
+  --border: #2a3a55;
+  --ring-bg: #1e2d4a;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 14px;
+  color: var(--text);
+  background: var(--bg);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+.view { display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
+.view[hidden] { display: none; }
+
+/* ── 登入 ── */
+#login-view {
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  background: radial-gradient(ellipse at 50% 0%, #1a2744 0%, var(--bg) 70%);
+}
+
+.login-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 2.5rem 2rem 2rem;
+  width: 100%;
+  max-width: 380px;
+  text-align: center;
+}
+
+.login-icon {
+  color: var(--primary-light);
+  margin-bottom: .75rem;
+}
+
+.login-card h1 {
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin-bottom: .25rem;
+}
+
+.login-subtitle {
+  color: var(--text-muted);
+  font-size: .85rem;
+  margin-bottom: 1.5rem;
+}
+
+.field {
+  margin-bottom: .75rem;
+  text-align: left;
+}
+.field label {
+  display: block;
+  margin-bottom: .3rem;
+  font-size: .8rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  letter-spacing: .02em;
+}
+
+input {
+  width: 100%;
+  padding: .55rem .75rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg-input);
+  color: var(--text);
+  font-size: .85rem;
+  outline: none;
+  transition: border-color .2s, box-shadow .2s;
+}
+input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(124, 58, 237, .15);
+}
+input::placeholder { color: var(--text-dim); }
+
+button {
+  cursor: pointer;
+  border: none;
+  border-radius: 8px;
+  font-size: .85rem;
+  font-weight: 600;
+  padding: .55rem 1.2rem;
+  transition: all .15s ease;
+  -webkit-app-region: no-drag;
+}
+button:hover { filter: brightness(1.1); }
+button:active { transform: scale(.98); }
+button:disabled { opacity: .35; cursor: not-allowed; filter: none; transform: none; }
+
+#login-btn {
+  width: 100%;
+  margin-top: .5rem;
+  padding: .7rem;
+  background: linear-gradient(135deg, var(--primary) 0%, #6d28d9 100%);
+  color: #fff;
+  font-size: .9rem;
+  letter-spacing: .03em;
+}
+
+.error {
+  margin-top: .75rem;
+  color: var(--danger);
+  font-size: .8rem;
+}
+
+/* ── Header ── */
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: .6rem 1.25rem;
+  background: var(--bg-card);
+  border-bottom: 1px solid var(--border);
+}
+header h1 { font-size: 1rem; font-weight: 600; }
+.header-actions { display: flex; gap: .4rem; }
+
+.btn-secondary {
+  background: var(--bg-input);
+  color: var(--text);
+  font-weight: 500;
+  padding: .45rem .9rem;
+  font-size: .85rem;
+}
+.btn-outline {
+  background: transparent;
+  color: var(--text-muted);
+  border: 1px solid var(--border);
+  font-weight: 500;
+  padding: .45rem .9rem;
+  font-size: .85rem;
+}
+.btn-primary { background: var(--primary); color: #fff; }
+.btn-info { background: var(--info); color: #fff; }
+.btn-danger { background: var(--danger); color: #fff; }
+.btn-text {
+  background: transparent;
+  color: var(--text-dim);
+  padding: .2rem .5rem;
+  font-size: .75rem;
+  font-weight: 500;
+}
+.btn-text:hover { color: var(--text-muted); }
+
+/* ── 儲存路徑列 ── */
+.save-bar {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  padding: .5rem 1.25rem;
+  background: var(--bg-card);
+  border-bottom: 1px solid var(--border);
+  font-size: .85rem;
+}
+.save-label {
+  color: var(--text-muted);
+  font-weight: 500;
+  flex-shrink: 0;
+}
+.save-path {
+  flex: 1;
+  color: var(--text-dim);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  direction: rtl;
+  text-align: left;
+  font-family: "SF Mono", "Fira Code", monospace;
+  font-size: .85rem;
+}
+.save-bar button {
+  flex-shrink: 0;
+  padding: .4rem .8rem;
+  font-size: .8rem;
+}
+
+/* ── Main Content ── */
+.main-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: .6rem 1rem;
+  gap: .5rem;
+  min-height: 0;
+  overflow: hidden;
+}
+
+/* ── 總進度卡 ── */
+.total-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: .6rem 1rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-shrink: 0;
+}
+
+.total-ring-wrap {
+  position: relative;
+  width: 56px;
+  height: 56px;
+  flex-shrink: 0;
+}
+
+.total-info { flex: 1; }
+
+.total-count {
+  font-size: 1.25rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.2;
+}
+.total-sep { color: var(--text-dim); margin: 0 .15rem; font-weight: 400; }
+.total-count span:last-child { color: var(--text-muted); font-weight: 400; font-size: .9rem; }
+.total-label { color: var(--text-muted); font-size: .75rem; margin-top: .1rem; }
+
+/* ── 分組卡片 ── */
+.group-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: .5rem;
+  flex-shrink: 0;
+}
+
+.group-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  display: flex;
+  overflow: hidden;
+}
+
+.group-left {
+  flex: 1;
+  padding: .5rem .75rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.group-header {
+  display: flex;
+  align-items: center;
+  gap: .4rem;
+}
+.group-title { font-weight: 600; font-size: .8rem; }
+
+.dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+.dot-primary { background: var(--primary); box-shadow: 0 0 6px rgba(124,58,237,.4); }
+.dot-info { background: var(--info); box-shadow: 0 0 6px rgba(6,182,212,.4); }
+
+.group-body {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  margin-top: .25rem;
+}
+
+.group-ring-wrap {
+  position: relative;
+  width: 50px;
+  height: 50px;
+  flex-shrink: 0;
+}
+
+.group-count {
+  font-size: .95rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+.group-sep { color: var(--text-dim); margin: 0 .1rem; font-weight: 400; }
+.group-count span:last-child { color: var(--text-muted); font-weight: 400; }
+
+.group-card > button {
+  border-radius: 0;
+  width: 5rem;
+  flex-shrink: 0;
+  font-size: .9rem;
+}
+
+/* ── 進度環共用 ── */
+.progress-ring { width: 100%; height: 100%; transform: rotate(-90deg); }
+.ring-bg { fill: none; stroke: var(--ring-bg); stroke-width: 7; }
+.ring-fg {
+  fill: none;
+  stroke: var(--success);
+  stroke-width: 7;
+  stroke-linecap: round;
+  transition: stroke-dashoffset .4s cubic-bezier(.4,0,.2,1);
+}
+.ring-fg.total { stroke: var(--success); }
+.ring-fg.primary { stroke: var(--primary); }
+.ring-fg.info { stroke: var(--info); }
+
+.ring-label {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1px;
+}
+.ring-num { font-size: 1.1rem; font-weight: 700; }
+.ring-label.small .ring-num { font-size: .85rem; }
+.ring-unit { font-size: .55rem; font-weight: 400; color: var(--text-muted); align-self: flex-end; margin-bottom: .2em; }
+
+/* ── 日誌 ── */
+.log-panel {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+.log-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: .4rem .75rem;
+  border-bottom: 1px solid var(--border);
+  font-weight: 600;
+  font-size: .75rem;
+  color: var(--text-muted);
+}
+.log-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: .3rem .6rem;
+  font-size: .7rem;
+  font-family: "SF Mono", "Fira Code", "Cascadia Code", monospace;
+}
+.log-list .log-item {
+  padding: .15rem 0;
+  color: var(--text-dim);
+}
+.log-item.ok { color: var(--success); }
+.log-item.fail { color: var(--danger); }
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--text-dim); }

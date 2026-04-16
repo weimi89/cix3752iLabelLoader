@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>面單貼標加載器</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- 連線畫面 -->
+  <div id="login-view" class="view">
+    <div class="login-card">
+      <div class="login-icon">
+        <svg viewBox="0 0 24 24" width="48" height="48" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+          <polyline points="3.27 6.96 12 12.01 20.73 6.96"/>
+          <line x1="12" y1="22.08" x2="12" y2="12"/>
+        </svg>
+      </div>
+      <h1>面單貼標加載器</h1>
+      <p class="login-subtitle">輸入伺服器連線資訊</p>
+      <form id="login-form">
+        <div class="field">
+          <label for="api-base">API 位址</label>
+          <input type="url" id="api-base" placeholder="https://ship.example.com" required>
+        </div>
+        <div class="field">
+          <label for="api-token">Token</label>
+          <input type="password" id="api-token" placeholder="Personal Access Token" required>
+        </div>
+        <button type="submit" id="login-btn">連線</button>
+        <p id="login-error" class="error" hidden></p>
+      </form>
+    </div>
+  </div>
+
+  <!-- 主畫面 -->
+  <div id="main-view" class="view" hidden>
+    <header>
+      <h1>面單貼標加載</h1>
+      <div class="header-actions">
+        <button id="refresh-btn" class="btn-secondary">重新整理</button>
+        <button id="logout-btn" class="btn-outline">登出</button>
+      </div>
+    </header>
+
+    <div class="save-bar">
+      <span class="save-label">儲存位置</span>
+      <span id="save-path" class="save-path" title="">載入中...</span>
+      <button id="choose-dir-btn" class="btn-secondary">變更</button>
+    </div>
+
+    <div class="main-content">
+      <!-- 總進度 -->
+      <div class="total-card">
+        <div class="total-ring-wrap">
+          <svg class="progress-ring" viewBox="0 0 140 140">
+            <circle class="ring-bg" cx="70" cy="70" r="60"/>
+            <circle class="ring-fg total" id="total-ring" cx="70" cy="70" r="60"
+                    stroke-dasharray="376.99" stroke-dashoffset="376.99"/>
+          </svg>
+          <div class="ring-label">
+            <span id="total-percent" class="ring-num">0</span>
+            <span class="ring-unit">%</span>
+          </div>
+        </div>
+        <div class="total-info">
+          <p class="total-count">
+            <span id="total-loaded">0</span>
+            <span class="total-sep">/</span>
+            <span id="total-count">0</span>
+          </p>
+          <p class="total-label">總計面單</p>
+        </div>
+      </div>
+
+      <!-- 分組卡片 -->
+      <div class="group-row">
+        <!-- 集運單 -->
+        <div class="group-card">
+          <div class="group-left">
+            <div class="group-header">
+              <span class="dot dot-primary"></span>
+              <span class="group-title">集運單</span>
+            </div>
+            <div class="group-body">
+              <div class="group-ring-wrap">
+                <svg class="progress-ring" viewBox="0 0 120 120">
+                  <circle class="ring-bg" cx="60" cy="60" r="50"/>
+                  <circle class="ring-fg primary" id="ring-proxy" cx="60" cy="60" r="50"
+                          stroke-dasharray="314.16" stroke-dashoffset="314.16"/>
+                </svg>
+                <div class="ring-label small">
+                  <span id="percent-proxy" class="ring-num">0</span>
+                  <span class="ring-unit">%</span>
+                </div>
+              </div>
+              <p class="group-count">
+                <span id="loaded-proxy">0</span>
+                <span class="group-sep">/</span>
+                <span id="count-proxy">0</span>
+              </p>
+            </div>
+          </div>
+          <button id="btn-proxy" class="btn-primary" disabled>執行</button>
+        </div>
+
+        <!-- 轉寄單 -->
+        <div class="group-card">
+          <div class="group-left">
+            <div class="group-header">
+              <span class="dot dot-info"></span>
+              <span class="group-title">轉寄單</span>
+            </div>
+            <div class="group-body">
+              <div class="group-ring-wrap">
+                <svg class="progress-ring" viewBox="0 0 120 120">
+                  <circle class="ring-bg" cx="60" cy="60" r="50"/>
+                  <circle class="ring-fg info" id="ring-forward" cx="60" cy="60" r="50"
+                          stroke-dasharray="314.16" stroke-dashoffset="314.16"/>
+                </svg>
+                <div class="ring-label small">
+                  <span id="percent-forward" class="ring-num">0</span>
+                  <span class="ring-unit">%</span>
+                </div>
+              </div>
+              <p class="group-count">
+                <span id="loaded-forward">0</span>
+                <span class="group-sep">/</span>
+                <span id="count-forward">0</span>
+              </p>
+            </div>
+          </div>
+          <button id="btn-forward" class="btn-info" disabled>執行</button>
+        </div>
+      </div>
+
+      <!-- 日誌 -->
+      <div class="log-panel">
+        <div class="log-header">
+          <span>下載日誌</span>
+          <button id="clear-log" class="btn-text">清除</button>
+        </div>
+        <div id="log-list" class="log-list"></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="main.js"></script>
+</body>
+</html>
