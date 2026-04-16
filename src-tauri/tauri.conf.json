@@ -1,7 +1,7 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
-  "productName": "面單貼標加載器",
-  "version": "0.1.0",
+  "productName": "cix3752i-LabelLoader",
+  "version": "0.1.2",
   "identifier": "com.cix3752i.label-loader",
   "build": {
     "frontendDist": "../src"
