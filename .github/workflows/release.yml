@@ -24,7 +24,7 @@ jobs:
             args: ''
             rust_target: ''
           - platform: ubuntu-22.04
-            args: ''
+            args: '--bundles deb,appimage,rpm'
             rust_target: ''
 
     runs-on: ${{ matrix.platform }}
