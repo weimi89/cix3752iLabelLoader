@@ -1,4 +1,4 @@
-const { invoke } = window.__TAURI__.core;
+const { invoke } = window.__TAURI__.tauri;
 const { open: openDialog } = window.__TAURI__.dialog;
 
 // ── 狀態 ──

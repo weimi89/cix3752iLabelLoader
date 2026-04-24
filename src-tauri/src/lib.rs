@@ -211,14 +211,11 @@ fn set_cache_dir(state: State<'_, AppState>, dir: String) -> String {
     dir
 }
 
-#[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     tauri::Builder::default()
-        .plugin(tauri_plugin_dialog::init())
-        .plugin(tauri_plugin_opener::init())
         .setup(|app| {
             let app_data = app
-                .path()
+                .path_resolver()
                 .app_data_dir()
                 .expect("無法取得 app data 目錄");
 

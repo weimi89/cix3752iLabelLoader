@@ -25,3 +25,7 @@ dist-ssr
 
 # Rust build output
 src-tauri/target/
+
+# Backups (local housekeeping)
+backups/
+.serena/

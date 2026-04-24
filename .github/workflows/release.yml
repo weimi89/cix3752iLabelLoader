@@ -9,7 +9,7 @@ permissions:
   contents: write
 
 jobs:
-  build:
+  build-desktop:
     strategy:
       fail-fast: false
       matrix:
@@ -23,20 +23,11 @@ jobs:
           - platform: windows-latest
             args: ''
             rust_target: ''
-          - platform: ubuntu-22.04
-            args: '--bundles deb,appimage,rpm'
-            rust_target: ''
 
     runs-on: ${{ matrix.platform }}
 
     steps:
       - uses: actions/checkout@v4
-
-      - name: Install dependencies (Ubuntu)
-        if: matrix.platform == 'ubuntu-22.04'
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev patchelf
 
       - uses: actions/setup-node@v4
         with:
@@ -66,3 +57,45 @@ jobs:
           releaseDraft: false
           prerelease: false
           args: ${{ matrix.args }}
+
+  build-linux:
+    runs-on: ubuntu-22.04
+    container:
+      image: ubuntu:20.04
+    env:
+      DEBIAN_FRONTEND: noninteractive
+
+    steps:
+      - name: Install base tools
+        run: |
+          apt-get update
+          apt-get install -y curl wget gpg ca-certificates git build-essential \
+            libwebkit2gtk-4.0-dev libssl-dev libgtk-3-dev libayatana-appindicator3-dev \
+            librsvg2-dev patchelf file libsoup2.4-dev pkg-config
+
+      - uses: actions/checkout@v4
+
+      - name: Install Node.js 22
+        run: |
+          curl -fsSL https://deb.nodesource.com/setup_22.x | bash -
+          apt-get install -y nodejs
+
+      - name: Install Rust stable
+        run: |
+          curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --default-toolchain stable
+          echo "$HOME/.cargo/bin" >> $GITHUB_PATH
+
+      - name: Install npm dependencies
+        run: npm ci
+
+      - name: Build Tauri app
+        uses: tauri-apps/tauri-action@v0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tagName: ${{ github.ref_name }}
+          releaseName: ${{ github.ref_name }}
+          releaseBody: '面單貼標加載器 ${{ github.ref_name }}'
+          releaseDraft: false
+          prerelease: false
+          args: '--bundles deb,appimage'
