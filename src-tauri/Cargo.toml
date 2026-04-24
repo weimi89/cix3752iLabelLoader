@@ -1,6 +1,6 @@
 [package]
 name = "cix3752ilabelloader"
-version = "0.1.4"
+version = "0.1.5"
 description = "面單貼標加載器"
 authors = ["RD-CAT"]
 edition = "2021"
@@ -18,3 +18,8 @@ serde = { version = "1", features = ["derive"] }
 serde_json = "1"
 reqwest = { version = "0.12", features = ["json", "rustls-tls"], default-features = false }
 tokio = { version = "1", features = ["fs"] }
+
+[features]
+# Tauri v1 強制要求：production 建置會啟用此 feature
+default = ["custom-protocol"]
+custom-protocol = ["tauri/custom-protocol"]

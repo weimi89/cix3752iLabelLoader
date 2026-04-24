@@ -9,7 +9,7 @@
   },
   "package": {
     "productName": "cix3752i-LabelLoader",
-    "version": "0.1.4"
+    "version": "0.1.5"
   },
   "tauri": {
     "allowlist": {
