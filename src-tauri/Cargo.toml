@@ -16,7 +16,10 @@ tauri-build = { version = "1", features = [] }
 tauri = { version = "1", features = ["dialog-open"] }
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"
-reqwest = { version = "0.12", features = ["json", "rustls-tls"], default-features = false }
+# TLS 一律用 ring：Linux 版在 Ubuntu 20.04（GCC 9、無 cmake）打包，reqwest 預設的 aws-lc 後端在那裡編不過；
+# 不帶後端的 reqwest 改用程序層級的預設後端，由 lib.rs 在啟動時安裝 ring，漏裝會在建立 HTTP client 時 panic
+reqwest = { version = "0.13", features = ["json", "query", "rustls-no-provider"], default-features = false }
+rustls = { version = "0.23", default-features = false, features = ["ring"] }
 tokio = { version = "1", features = ["fs"] }
 
 [features]

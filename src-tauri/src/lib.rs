@@ -212,6 +212,9 @@ fn set_cache_dir(state: State<'_, AppState>, dir: String) -> String {
 }
 
 pub fn run() {
+    // reqwest 不帶 TLS 後端（見 Cargo.toml），HTTP client 建立前必須先裝好 ring，否則啟動即 panic
+    let _ = rustls::crypto::ring::default_provider().install_default();
+
     tauri::Builder::default()
         .setup(|app| {
             let app_data = app
